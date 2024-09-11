@@ -2,16 +2,17 @@
 session_start();
 require 'products.php';
 
-// Check if there are items in the cart
+
 if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
     echo "Your cart is empty. <a href='index.php'>Go back to products</a>";
     exit;
 }
 
-// Generate a unique order code
-$order_code = uniqid();
 
-// Get the order from the cart (Session variable)
+$order_code = uniqid('ORDER_');
+
+$order_date = date('Y-m-d H:i:s');
+
 $cart_items = [];
 $total = 0;
 
@@ -24,30 +25,39 @@ foreach ($_SESSION['cart'] as $product_id) {
     }
 }
 
-// Save order details to a text file
+
 $order_details = "Order Code: $order_code\n";
-$order_details .= "Products:\n";
+$order_details .= "Date and Time Ordered: $order_date\n";
+$order_details .= "Order Items:\n";
 foreach ($cart_items as $item) {
-    $order_details .= "- {$item['name']} ({$item['price']} PHP)\n";
+    $order_details .= "Product ID: {$item['id']} | Product Name: {$item['name']} | Price: {$item['price']} PHP\n";
 }
-$order_details .= "Total: $total PHP\n";
+$order_details .= "Total Price: $total PHP\n";
+
 
 file_put_contents("orders-$order_code.txt", $order_details);
 
-// Clear the cart after placing the order
+
 $_SESSION['cart'] = [];
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Place Order</title>
+    <title>Order Confirmation</title>
 </head>
 <body>
     <h1>Order Confirmation</h1>
     <p>Thank you for your order!</p>
-    <p>Order Code: <?php echo $order_code; ?></p>
-    <p>Total: <?php echo $total; ?> PHP</p>
+    <p><strong>Order Code:</strong> <?php echo $order_code; ?></p>
+    <p><strong>Date and Time Ordered:</strong> <?php echo $order_date; ?></p>
+    <h2>Order Summary</h2>
+    <ul>
+        <?php foreach ($cart_items as $item): ?>
+            <li>Product ID: <?php echo $item['id']; ?> | Name: <?php echo $item['name']; ?> | Price: <?php echo $item['price']; ?> PHP</li>
+        <?php endforeach; ?>
+    </ul>
+    <p><strong>Total Price:</strong> <?php echo $total; ?> PHP</p>
     <a href="index.php">Go back to products</a>
 </body>
 </html>

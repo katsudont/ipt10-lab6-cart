@@ -2,16 +2,16 @@
 session_start();
 require 'products.php';
 
-// Get products in the cart
+
 $cart_items = [];
-$total = 0; // Variable to hold the total cost
+$total = 0; 
 
 if (isset($_SESSION['cart'])) {
     foreach ($_SESSION['cart'] as $product_id) {
         foreach ($products as $product) {
             if ($product['id'] == $product_id) {
                 $cart_items[] = $product;
-                $total += $product['price']; // Add product price to the total
+                $total += $product['price']; 
             }
         }
     }
@@ -39,6 +39,7 @@ if (isset($_SESSION['cart'])) {
         <p><strong>Total: <?php echo $total; ?> PHP</strong></p> <!-- Display total cost -->
     <?php endif; ?>
 
+    <a href="index.php">Back to Products</a>
     <a href="reset-cart.php">Clear my cart</a>
     <a href="place_order.php">Place the order</a>
 </body>
