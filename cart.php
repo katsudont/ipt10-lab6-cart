@@ -1,7 +1,21 @@
 <?php
 session_start();
 require 'products.php';
-// TODO: Display items in the cart
+
+// Get products in the cart
+$cart_items = [];
+$total = 0; // Variable to hold the total cost
+
+if (isset($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $product_id) {
+        foreach ($products as $product) {
+            if ($product['id'] == $product_id) {
+                $cart_items[] = $product;
+                $total += $product['price']; // Add product price to the total
+            }
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,13 +26,20 @@ require 'products.php';
 <body>
     <h1>Your Cart</h1>
     <ul>
-        <!-- TODO: List products added to the cart -->
+        <?php if (!empty($cart_items)): ?>
+            <?php foreach ($cart_items as $item): ?>
+                <li><?php echo $item['name']; ?> - <?php echo $item['price']; ?> PHP</li>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <li>Your cart is empty.</li>
+        <?php endif; ?>
     </ul>
 
+    <?php if (!empty($cart_items)): ?>
+        <p><strong>Total: <?php echo $total; ?> PHP</strong></p> <!-- Display total cost -->
+    <?php endif; ?>
 
     <a href="reset-cart.php">Clear my cart</a>
     <a href="place_order.php">Place the order</a>
 </body>
 </html>
-
-

@@ -1,0 +1,6 @@
+Order Code: 66e18a2886926
+Products:
+- 25Kg Rice (1200 PHP)
+- One Tray Eggs (300 PHP)
+- One Dozen Eggs (200 PHP)
+Total: 1700 PHP

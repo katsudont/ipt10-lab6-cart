@@ -1,0 +1,4 @@
+Order Code: 66e18b165192f
+Products:
+- 5Kg Sugar (500 PHP)
+Total: 500 PHP
